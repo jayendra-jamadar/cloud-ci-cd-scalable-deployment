@@ -1,111 +1,25 @@
-## Integrating with GitHub Actions – CICD pipeline to Deploy a Web App to Amazon EC2
+## Integrating GitHub Actions with CI CD pipeline for deploying a web application on Amazon EC2
 
-Many Organizations adopt [DevOps Practices](https://aws.amazon.com/devops/what-is-devops/) to innovate faster by automating and streamlining the software development and infrastructure management processes. Beyond cultural adoption, DevOps also suggests following certain best practices and Continuous Integration and Continuous Delivery (CI/CD) is among the important ones to start with. CI/CD practice reduces the time it takes to release new software updates by automating deployment activities. Many tools are available to implement this practice. Although AWS has a set of native tools to help achieve your CI/CD goals, it also offers flexibility and extensibility for integrating with numerous third party tools.
+These days many companies move towards DevOps because they want to build things faster and also manage software in a smoother way. DevOps is not just about tools it is more about mindset and working style. When teams start using DevOps properly they usually follow certain habits that help them deliver software quickly and safely. One of the most important habits is Continuous Integration and Continuous Delivery. This method helps reduce the time required to release updates because most of the deployment work gets automated. There are many tools available for this but AWS gives its own set of tools while still allowing developers to connect with outside platforms like GitHub which makes the system flexible and easy to extend.
 
-In this post, you will use [GitHub Actions](https://help.github.com/en/actions) to create a CI/CD workflow and [AWS CodeDeploy](https://aws.amazon.com/codedeploy/) to deploy a sample Java SpringBoot application to Amazon Elastic Compute Cloud ([Amazon EC2](https://docs.aws.amazon.com/ec2/index.html?nc2=h_ql_doc_ec2#amazon-ec2)) instances in an Autoscaling group.
+In this work the main focus is using GitHub Actions to create a workflow that automatically builds and deploys an example Java SpringBoot web application onto Amazon EC2 machines that run inside an Auto Scaling setup. The idea is simple but powerful. Code changes happen then deployment happens without manual effort.
 
+GitHub Actions is actually part of GitHub itself which makes it very comfortable for developers because they can manage automation in the same place where they store their code. Developers can write small tasks called actions then join them together to build full workflows. These workflows run automatically and can handle building testing packaging releasing or even deploying projects directly from the repository. It feels like having a silent assistant that keeps running background tasks every time code is updated.
 
-GitHub Actions is a feature on GitHub’s popular development platform that helps you automate your software development workflows in the same place that you store code and collaborate on pull requests and issues. You can write individual tasks called actions, and then combine them to create a custom workflow. Workflows are custom automated processes that you can set up in your repository to build, test, package, release, or deploy any code project on GitHub.
+AWS CodeDeploy works as the deployment engine in this setup. It helps push applications onto EC2 servers or even on prem machines or AWS Lambda or container services. The service handles deployment steps which reduces human mistakes and keeps the process consistent. It basically acts like a traffic controller making sure the new version of application reaches the correct servers smoothly.
 
-AWS CodeDeploy is a deployment service that automates application deployments to Amazon EC2 instances, on-premises instances, serverless AWS Lambda functions, or Amazon Elastic Container Service (Amazon ECS) services.
+The solution uses multiple AWS services working together. Each service plays a small role but when combined they create a complete system that feels strong and scalable. GitHub Actions acts as the brain controlling the pipeline. AWS CodeDeploy handles deployment operations on EC2 instances that run inside Auto Scaling groups. Auto Scaling itself keeps application available by adding new servers during heavy traffic and removing them when demand becomes low. Amazon EC2 machines serve as the final destination where the web application actually runs. AWS CloudFormation is used to automatically create infrastructure on AWS instead of setting up each service manually which saves time and avoids configuration mistakes. IAM OIDC identity provider builds trust between GitHub and AWS allowing GitHub workflows to access AWS resources safely without storing secret keys. Amazon S3 works as storage that keeps deployment files before they are sent to servers.
 
+Before starting this implementation certain requirements must be ready. An AWS account is required with permissions to create services. A Git client is required to copy project code. A GitHub account is required to manage repositories workflows and secrets. These are basic but very necessary steps.
 
-## Solution Overview
+The overall walkthrough follows a structured flow. First the project repository is copied from AWS sample resources. Then CloudFormation template is deployed to create AWS infrastructure automatically. After infrastructure is ready source code can be updated based on requirement. GitHub secrets are configured to allow secure communication between GitHub and AWS. CodeDeploy is connected with GitHub repository. Finally GitHub workflow is triggered to build and deploy application and deployment success is verified.
 
-The solution utilizes following services:
+To start working with the project the source code must be downloaded from AWS sample repository. After downloading a new empty repository is created in personal GitHub account. All project files including hidden GitHub workflow folders must be copied into the new repository because those hidden folders contain automation instructions that are necessary for workflow execution.
 
-1.	[GitHub Actions](https://docs.github.com/en/actions) : Workflow Orchestration tool that will host the Pipeline. 
-2.	[AWS CodeDeploy](https://aws.amazon.com/codedeploy/) : AWS service to manage deployment on Amazon EC2 Autoscaling Group.
-3.	[AWS Auto Scaling](https://aws.amazon.com/ec2/autoscaling/) : AWS Service to help maintain application availability and elasticity by automatically adding or removing EC2 instances. 
-4.	[Amazon EC2](https://docs.aws.amazon.com/ec2/index.html?nc2=h_ql_doc_ec2#amazon-ec2) : Destination Compute server for the application deployment.
-5.	[AWS CloudFormation](https://aws.amazon.com/cloudformation/) : AWS infrastructure as code (IaC) service used to spin up the initial infrastructure on AWS side.
-6.	[IAM OIDC identity provider](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html) : Federated authentication service to establish trust between GitHub and AWS to allow GitHub Actions to deploy on AWS without maintaining AWS Secrets and credentials. 
-7.	[Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) : Amazon S3 to store the deployment artifacts.
+CloudFormation template deployment is the next step and it builds most of the AWS infrastructure automatically. User needs to open AWS CloudFormation console then sign into account. Region must be selected properly because services will be created inside that region. New stack creation is selected and template file is uploaded from the downloaded repository. Stack details are filled including stack name VPC subnet configuration GitHub repository name and thumbprint list for GitHub authentication. IAM resource creation permission must be acknowledged before stack creation begins. CloudFormation usually takes several minutes to finish building infrastructure and during that time many services get prepared automatically.
 
-The following diagram illustrates the architecture for the solution:
-![Alt Text](aws-coodedeplooy-github-action-deploymentV3.png?raw=true  "Title")
+The created infrastructure normally includes two Linux based EC2 machines running Tomcat server along with CodeDeploy agent installed inside them. It also builds Auto Scaling group combined with internet facing load balancer which distributes traffic across instances. CodeDeploy application and deployment group are created to manage application updates. S3 bucket is created for storing build files. IAM OIDC identity provider is created for secure authentication between GitHub and AWS. EC2 instance profile and CodeDeploy service role are also generated automatically. Security groups are created to control network traffic between load balancer and EC2 machines.
 
-## Prerequisites
-Before you begin, you need to complete the following prerequisites:
-    
-   * An AWS account with permissions to create the necessary resources.
-   * A [Git Client](https://git-scm.com/downloads) to clone the provided source code.
-   * A [GitHub account](https://github.com/) with permissions to configure GitHub repositories, create workflows, and configure GitHub secrets.
+After infrastructure setup GitHub configuration becomes important. GitHub workflows must be configured correctly along with secrets that allow workflow to interact with AWS resources. Once configuration is complete GitHub action workflow can be triggered. The workflow builds project packages deployment files uploads them to S3 then CodeDeploy deploys application on EC2 instances. Deployment verification is done by checking application running status through load balancer or EC2 public address.
 
-## Walkthrough
-The following steps provide a high-level overview of the walkthrough:
-
-  1.	Clone the project from the AWS code samples repository.
-  2.	Deploy the AWS CloudFormation template to create the required services.
-  3.	Update the source code.
-  4.	Setup GitHub secrets.
-  5.	Integrate CodeDeploy with GitHub
-  6.	Trigger the GitHub Action to build and deploy the code.
-  7.	Verify the deployment.
-
-## Download the source code
-
-Clone this repository aws-codedeploy-github-actions-deployment 
-
-    git clone https://github.com/aws-samples/aws-codedeploy-github-actions-deployment.git
-
-Create an empty repository in your personal GitHub account.
-
-    git clone https://github.com/<username>/<repoName>.git
-    
-Copy the code. We need contents from the hidden .github folder for the GitHub actions to work.
-
-    cp -r aws-codedeploy-github-actions-deployment/. <new repository>
-
-    e.g. GitActionsDeploytoAWS
-
-## Deploying the CloudFormation template
-To deploy the CloudFormation template, complete the following steps:
-
-    1.	Open AWS CloudFormation console. Enter your account ID, user name and Password. 
-    2.	Check your region, this solution uses us-east-1.
-    3.	If this is  new AWS CloudFormation account, click Create New Stack. Otherwise, select Create Stack.
-    4.	Select Template is Ready
-    5.	Click Upload a template file
-    6.	Click Choose File. Navigate to template.yml file in your cloned repository at “aws-codedeploy-github-actions-deployment/cloudformation/template.yaml” 
-    7.	Select the template.yml file and select next.
-    8.	In Specify Stack Details, add or modify values as needed.
-            - Stack name = CodeDeployStack.
-            - VPC and Subnets = (these are pre-populated for you) you can change these values if you prefer to use your own Subnets)
-            - GitHubThumbprintList = 6938fd4d98bab03faadb97b34396831e3780aea1
-            - GitHubRepoName – Name of your GitHub personal repository which you created.
-    9.	On the Options page, click Next.
-    10.	Select the acknowledgement box to allow the creation of IAM resources, and then select Create. 
-    It will take CloudFormation about 5 minutes to create all the resources. This stack would create below resources.
-           - Two EC2 Linux instances with Tomcat server and CodeDeploy agent installed 
-           - Autoscaling group with Internet Application load balancer
-           - CodeDeploy application name and deployment group
-           - S3 bucket to store build artifacts
-           - Identity and Access Management (IAM) OIDC identity provider
-           - Instance profile for Amazon EC2 
-           - Service role for CodeDeploy
-           - Security groups for ALB and Amazon EC2
-
-## GitHub configuration and Testing
-
-Please follow the [blog post](https://aws.amazon.com/blogs/devops/integrating-with-github-actions-ci-cd-pipeline-to-deploy-a-web-app-to-amazon-ec2/) to setup GitHub actions and test the CICD flow.
-
-## Clean up
-
-To avoid incurring future changes, you should clean up the resources that you created.
-
-    1. Empty the Amazon S3 bucket:
-    2. Delete the CloudFormation stack (CodeDeployStack) from the AWS console.
-    3. Delete the GitHub Secret (‘IAMROLE_GITHUB’)
-        1. Go to the repository settings on GitHub Page.
-        2. Select Secrets under Actions.
-        3. Select IAMROLE_GITHUB, and delete it.
-
-
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
+Cleaning resources after testing is a responsible step because unused cloud services may generate unwanted charges. S3 bucket contents should be emptied first. After that CloudFormation stack should be deleted which automatically removes most AWS resources created earlier. GitHub secrets related to IAM role should also be removed from repository settings to maintain security.
