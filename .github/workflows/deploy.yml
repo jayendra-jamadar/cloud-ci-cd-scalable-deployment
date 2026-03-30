@@ -1,0 +1,39 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::453764756912:role/GitHub-Actions-Deploy-Role
+          aws-region: ap-southeast-2
+
+      - name: Zip application
+        run: zip -r deployment.zip .
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp deployment.zip s3://cloud-cicd-artifacts-jayendra-123/deployment.zip
+
+      - name: Deploy using CodeDeploy
+        run: |
+          aws deploy create-deployment \
+            --application-name cloud-cicd-app \
+            --deployment-group-name cloud-cicd-deployment-group \
+            --s3-location bucket=cloud-cicd-artifacts-jayendra-123,key=deployment.zip,bundleType=zip \
+            --region ap-southeast-2
