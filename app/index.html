@@ -1,23 +1,339 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Cloud CI/CD Deployment</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLOUDFORM — CI/CD Deployment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<h1>🚀 CI/CD Cloud Deployment Project</h1>
-<h3>By Team 2</h3>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
 
-<div class="card">
-<p>This application demonstrates automated deployment using AWS DevOps services.</p>
-</div>
-  <h2>Deployment Test Final</h2>
+  <!-- NAV -->
+  <nav class="navbar glass">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="brand-mark">▲</span>
+        <span class="brand-name">CLOUDFORM</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#pipeline">Pipeline</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#status">Status</a></li>
+      </ul>
+      <div class="nav-badge">
+        <span class="live-dot"></span> LIVE
+      </div>
+    </div>
+  </nav>
 
-<button onclick="showMessage()">Test Deployment</button>
+  <!-- HERO -->
+  <header class="hero" id="hero">
+    <div class="hero-eyebrow">
+      <span class="mono">Issue No. 01</span>
+      <span class="divider">·</span>
+      <span class="mono">AWS DevOps</span>
+      <span class="divider">·</span>
+      <span class="mono">CBS3005</span>
+    </div>
 
-<script src="script.js"></script>
+    <div class="hero-headline">
+      <h1 class="display-title">
+        <em>The Art of</em><br/>
+        Automated<br/>
+        <span class="title-outline">Deployment</span>
+      </h1>
+    </div>
 
+    <div class="hero-meta">
+      <div class="author-card glass">
+        <div class="author-info">
+          <span class="mono label">Author</span>
+          <span class="author-name">Jayendra Jamadar</span>
+          <span class="mono sub">VIT University · 23BBS0078</span>
+        </div>
+      </div>
+      <p class="hero-desc">A complete CI/CD pipeline engineered on AWS — from commit to cloud in seconds. GitHub Actions, CodeDeploy, Auto Scaling, and zero-downtime delivery.</p>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span class="mono">Scroll to explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </header>
+
+  <!-- PIPELINE SECTION -->
+  <section class="section pipeline-section" id="pipeline">
+    <div class="section-header">
+      <span class="section-num mono">01</span>
+      <h2 class="section-title">The Pipeline</h2>
+      <p class="section-sub">Every commit triggers a choreography of automated steps.</p>
+    </div>
+
+    <div class="pipeline-flow">
+      <div class="pipeline-step glass">
+        <div class="step-icon">⌥</div>
+        <div class="step-body">
+          <span class="mono label">Step 01</span>
+          <h3>Developer Push</h3>
+          <p>Code committed to GitHub. The trigger that sets everything in motion.</p>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="pipeline-step glass">
+        <div class="step-icon">⚙</div>
+        <div class="step-body">
+          <span class="mono label">Step 02</span>
+          <h3>GitHub Actions</h3>
+          <p>Workflow fires — build, test, package. OIDC authenticates with AWS seamlessly.</p>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="pipeline-step glass">
+        <div class="step-icon">◈</div>
+        <div class="step-body">
+          <span class="mono label">Step 03</span>
+          <h3>S3 Artifact Store</h3>
+          <p>Build artifact uploaded to S3 bucket. Versioned. Immutable. Ready.</p>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="pipeline-step glass">
+        <div class="step-icon">▶</div>
+        <div class="step-body">
+          <span class="mono label">Step 04</span>
+          <h3>CodeDeploy</h3>
+          <p>Rolling deployment across EC2 instances via Auto Scaling Group.</p>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="pipeline-step glass">
+        <div class="step-icon">✦</div>
+        <div class="step-body">
+          <span class="mono label">Step 05</span>
+          <h3>Live &amp; Scaled</h3>
+          <p>ALB routes traffic. Application running in ap-southeast-2. Zero downtime.</p>
+        </div>
+        <div class="step-arrow invis">→</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE SECTION -->
+  <section class="section arch-section" id="architecture">
+    <div class="arch-inner">
+      <div class="arch-left">
+        <span class="section-num mono">02</span>
+        <h2 class="section-title">Architecture</h2>
+        <p class="arch-desc">A production-grade AWS architecture designed for resilience, scalability, and zero-touch deployments — templated entirely in CloudFormation.</p>
+        <div class="arch-highlights">
+          <div class="highlight-item">
+            <span class="h-label mono">Region</span>
+            <span class="h-val">ap-southeast-2</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-label mono">IaC</span>
+            <span class="h-val">CloudFormation</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-label mono">Auth</span>
+            <span class="h-val">IAM OIDC</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-label mono">Deploy</span>
+            <span class="h-val">Rolling / CodeDeploy</span>
+          </div>
+        </div>
+      </div>
+      <div class="arch-right">
+        <div class="arch-diagram glass">
+          <div class="diag-row">
+            <div class="diag-node top-node">
+              <span class="node-icon">⎇</span>
+              <span>GitHub</span>
+            </div>
+          </div>
+          <div class="diag-line"></div>
+          <div class="diag-row">
+            <div class="diag-node">
+              <span class="node-icon">⚡</span>
+              <span>GH Actions</span>
+            </div>
+          </div>
+          <div class="diag-line"></div>
+          <div class="diag-row multi-row">
+            <div class="diag-node sm">
+              <span class="node-icon">🪣</span>
+              <span>S3</span>
+            </div>
+            <div class="diag-connector">⟷</div>
+            <div class="diag-node sm">
+              <span class="node-icon">▶</span>
+              <span>CodeDeploy</span>
+            </div>
+          </div>
+          <div class="diag-line"></div>
+          <div class="diag-row">
+            <div class="diag-node">
+              <span class="node-icon">⚖</span>
+              <span>ALB</span>
+            </div>
+          </div>
+          <div class="diag-line"></div>
+          <div class="diag-row multi-row">
+            <div class="diag-node sm accent-node">
+              <span class="node-icon">□</span>
+              <span>EC2</span>
+            </div>
+            <div class="diag-node sm accent-node">
+              <span class="node-icon">□</span>
+              <span>EC2</span>
+            </div>
+            <div class="diag-node sm accent-node">
+              <span class="node-icon">□</span>
+              <span>EC2</span>
+            </div>
+          </div>
+          <div class="diag-caption mono">Auto Scaling Group · ap-southeast-2</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK SECTION -->
+  <section class="section stack-section" id="stack">
+    <div class="section-header">
+      <span class="section-num mono">03</span>
+      <h2 class="section-title">Technology Stack</h2>
+      <p class="section-sub">The tools that power this deployment machine.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Source Control</span><span class="sc-icon">⎇</span></div>
+        <h3>GitHub</h3>
+        <p>Repository host and CI/CD trigger. Every push to main initiates the pipeline.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">CI/CD Engine</span><span class="sc-icon">⚡</span></div>
+        <h3>GitHub Actions</h3>
+        <p>Workflow automation with YAML-defined jobs. OIDC token exchange with AWS.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Artifact Storage</span><span class="sc-icon">◈</span></div>
+        <h3>Amazon S3</h3>
+        <p>Secure, versioned artifact bucket. Immutable build packages per deployment.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Deployment</span><span class="sc-icon">▶</span></div>
+        <h3>AWS CodeDeploy</h3>
+        <p>Rolling deployments across EC2 fleet. appspec.yml lifecycle hooks.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Compute</span><span class="sc-icon">□</span></div>
+        <h3>EC2 + ASG</h3>
+        <p>Auto Scaling Group for elastic capacity. Scales in and out based on load.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Networking</span><span class="sc-icon">⚖</span></div>
+        <h3>App Load Balancer</h3>
+        <p>Distributes traffic across healthy instances. Health checks every 30 seconds.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">IaC</span><span class="sc-icon">⧉</span></div>
+        <h3>CloudFormation</h3>
+        <p>Entire infrastructure declared as code. Repeatable, version-controlled stacks.</p>
+      </div>
+      <div class="stack-card glass">
+        <div class="sc-top"><span class="sc-tag mono">Security</span><span class="sc-icon">◎</span></div>
+        <h3>IAM &amp; OIDC</h3>
+        <p>No long-lived credentials. GitHub Actions assumes role via OIDC federation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS SECTION -->
+  <section class="section status-section" id="status">
+    <div class="status-inner">
+      <div class="status-left glass">
+        <span class="section-num mono">04</span>
+        <h2 class="section-title">Deployment Status</h2>
+        <div class="status-grid">
+          <div class="status-item">
+            <div class="status-dot green"></div>
+            <div>
+              <span class="mono label">Pipeline</span>
+              <span class="status-val">Operational</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot green"></div>
+            <div>
+              <span class="mono label">EC2 Instances</span>
+              <span class="status-val">3 / 3 Healthy</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot green"></div>
+            <div>
+              <span class="mono label">Load Balancer</span>
+              <span class="status-val">Active</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot amber"></div>
+            <div>
+              <span class="mono label">Auto Scaling</span>
+              <span class="status-val">Monitoring</span>
+            </div>
+          </div>
+        </div>
+        <button class="deploy-btn" onclick="triggerDeploy()">
+          <span class="btn-text">Simulate Deployment</span>
+          <span class="btn-icon">▲</span>
+        </button>
+      </div>
+      <div class="status-right">
+        <div class="terminal glass">
+          <div class="terminal-bar">
+            <div class="t-dots"><span></span><span></span><span></span></div>
+            <span class="mono t-title">deployment.log</span>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <div class="t-line"><span class="t-prompt mono">$</span> <span class="mono">aws deploy create-deployment</span></div>
+            <div class="t-line success"><span class="mono">✓ Deployment initiated: d-XYZABC123</span></div>
+            <div class="t-line"><span class="mono t-dim">INFO  Fetching artifact from S3...</span></div>
+            <div class="t-line success"><span class="mono">✓ Artifact validated (sha256 match)</span></div>
+            <div class="t-line"><span class="mono t-dim">INFO  Installing on i-0abc123def456...</span></div>
+            <div class="t-line success"><span class="mono">✓ Instance 1/3 deployed</span></div>
+            <div class="t-line success"><span class="mono">✓ Instance 2/3 deployed</span></div>
+            <div class="t-line success"><span class="mono">✓ Instance 3/3 deployed</span></div>
+            <div class="t-line"><span class="mono t-dim">INFO  Health checks passing...</span></div>
+            <div class="t-line highlight"><span class="mono">✦ DEPLOYMENT SUCCESSFUL — 0 errors</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">▲</span>
+        <span class="brand-name">CLOUDFORM</span>
+      </div>
+      <p class="mono footer-desc">CBS3005 · Cloud Computing · VIT University</p>
+      <p class="mono footer-copy">Jayendra Jamadar · 23BBS0078 · 2024</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
